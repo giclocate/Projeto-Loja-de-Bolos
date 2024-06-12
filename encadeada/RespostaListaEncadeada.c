@@ -3,7 +3,6 @@ ALUNAS: GIOVANNA CLÓCATE E KÁTIA ROCHA
 PROFESSOR: MAYRTON DIAS DE QUEIROZ
 */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -43,19 +42,25 @@ int inserirElemento(Lista *lista, int valor);
 int removerElemento(Lista *lista, int valor);
 void mostrarElementos(Lista *lista);
 void excluirLista(Lista *lista);
+int inserirElementoID(Lista *lista, int posicao);
+int inserirElementoInicio(Lista *lista, int id);
+int tamanho(Lista *lista);
 
 /* Função principal */
 int main() {
     Lista *lista = criarLista();
-    int opcao, id;
+    int opcao, id, posicao;
 
     do {
         printf("\nMenu de Operacoes:\n");
         printf("1. Inserir novo bolo\n");
-        printf("2. Remover bolo\n");
-        printf("3. Buscar bolo por ID\n");
-        printf("4. Mostrar todos os bolos\n");
-        printf("5. Sair\n");
+        printf("2. Inserir bolo no início\n");
+        printf("3. Inserir bolo na posição\n");
+        printf("4. Remover bolo\n");
+        printf("5. Buscar bolo por ID\n");
+        printf("6. Mostrar todos os bolos\n");
+        printf("7. Mostrar quantidade de bolos\n");
+        printf("8. Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
 
@@ -64,40 +69,50 @@ int main() {
                 inserirElemento(lista, lista->ult != NULL ? lista->ult->bolo->id + 1 : 1);
                 break;
             case 2:
+                inserirElementoInicio(lista, lista->ult != NULL ? lista->ult->bolo->id + 1 : 1);
+                break;
+            case 3:
+                printf("Digite a posição onde o bolo será inserido: ");
+                scanf("%d", &posicao);
+                inserirElementoID(lista, posicao);
+                break;
+            case 4:
                 printf("Digite o ID do bolo a ser removido: ");
                 scanf("%d", &id);
                 removerElemento(lista, id);
                 break;
-            case 3:
+            case 5:
                 printf("Digite o ID do bolo a ser buscado: ");
                 scanf("%d", &id);
                 buscarElemento(lista, id);
                 break;
-            case 4:
+            case 6:
                 mostrarElementos(lista);
                 break;
-            case 5:
+            case 7:
+                printf("Quantidade de bolos na lista: %d\n", tamanho(lista));
+                break;
+            case 8:
                 excluirLista(lista);
                 printf("Programa encerrado.\n");
                 break;
             default:
                 printf("Opcao invalida.\n");
         }
-    } while (opcao != 5);
+    } while (opcao != 8);
 
     return 0;
 }
 
-/* Função para criar um novo bolo */
-
+/* Função para limpar o buffer */
 void limparBuffer () {
-    
     char c;
     do {
         c = getchar();
     } while (c != '\n');
 }
 
+/* Função para criar um novo bolo */
 Bolo* criarFilaBolo() {
     Bolo *novoBolo = (Bolo*)malloc(sizeof(Bolo));
     if (novoBolo == NULL) {
@@ -107,12 +122,16 @@ Bolo* criarFilaBolo() {
 
     printf("\nDigite o ID do bolo:\n");
     scanf("%d", &novoBolo->id);
+    limparBuffer();
     printf("\nDigite o nome do bolo:\n");
-    scanf("%s", novoBolo->nomeBolo);
+    fgets(novoBolo->nomeBolo, 50, stdin);
+    strtok(novoBolo->nomeBolo, "\n");
     printf("\nDigite o tamanho do bolo (P, M ou G):\n");
     scanf(" %c", &novoBolo->tamanhoBolo);
+    limparBuffer();
     printf("\nDigite a data de vencimento do bolo:\n");
-    scanf("%s", novoBolo->dataVencimento);
+    fgets(novoBolo->dataVencimento, 20, stdin);
+    strtok(novoBolo->dataVencimento, "\n");
     printf("\nDigite o preco do bolo:\n");
     scanf("%f", &novoBolo->precoBolo);
 
@@ -191,7 +210,6 @@ int inserirElemento(Lista *lista, int valor) {
     return 1;
 }
 
-/*
 /* Função para mostrar todos os bolos da lista */
 void mostrarElementos(Lista *lista) {
     ListaNo *p;
@@ -254,4 +272,58 @@ void excluirLista(Lista *lista) {
     }
 
     free(lista);
+}
+
+/* Função para inserir um bolo na lista em uma posição específica */
+int inserirElementoID(Lista *lista, int posicao) {
+    if (lista == NULL) {
+        printf("A lista nao foi criada\n");
+        return 0;
+    }
+
+    Bolo *novoBolo = criarFilaBolo();
+    ListaNo *novoNo = (ListaNo*)malloc(sizeof(ListaNo));
+    if (novoNo == NULL) {
+        printf("Erro ao alocar memoria para o no da lista.\n");
+        exit(1);
+    }
+    novoNo->bolo = novoBolo;
+    novoNo->prox = NULL;
+
+    if (posicao <= 1 || lista->prim == NULL) {
+        novoNo->prox = lista->prim;
+        lista->prim = novoNo;
+        if (lista->ult == NULL) {
+            lista->ult = novoNo;
+        }
+    } else {
+        ListaNo *p = lista->prim;
+        for (int i = 1; i < posicao - 1 && p->prox != NULL; i++) {
+            p = p->prox;
+        }
+        novoNo->prox = p->prox;
+        p->prox = novoNo;
+        if (novoNo->prox == NULL) {
+            lista->ult = novoNo;
+        }
+    }
+
+    printf("Bolo inserido na posição %d com sucesso.\n", posicao);
+    return 1;
+}
+
+/* Função para inserir um bolo no início da lista */
+int inserirElementoInicio(Lista *lista, int id) {
+    return inserirElementoID(lista, 1);
+}
+
+/* Função para obter o tamanho da lista */
+int tamanho(Lista *lista) {
+    int count = 0;
+    ListaNo *p = lista->prim;
+    while (p != NULL) {
+        count++;
+        p = p->prox;
+    }
+    return count;
 }
