@@ -92,6 +92,12 @@ void excluirFila(Fila* fila) {
     }
 }
 
+/* Função para limpar o buffer de entrada */
+void limparBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
 /* Função principal */
 int main() {
     Fila* fila = criarFilaBolo();
@@ -115,13 +121,17 @@ int main() {
                 }
                 printf("Digite o ID do bolo: ");
                 scanf("%d", &novoBolo->id);
+                limparBuffer();
                 printf("Digite o nome do bolo: ");
-                scanf("%s", novoBolo->nomeBolo);
+                scanf("%49[^\n]s", &novoBolo->nomeBolo);
                 printf("Digite o tamanho do bolo (P/M/G): ");
-                scanf(" %c", &novoBolo->tamanhoBolo);
-                printf("Digite a data de vencimento (dd/mm/yyyy): ");
-                scanf("%s", novoBolo->dataVencimento);
+                limparBuffer();
+                scanf("%c", &novoBolo->tamanhoBolo);
+                printf("Digite a data de vencimento do bolo (dd/mm/yyyy): ");
+                limparBuffer();
+                scanf("%10[^\n]s", &novoBolo->dataVencimento);
                 printf("Digite o preco do bolo: ");
+                limparBuffer();
                 scanf("%f", &novoBolo->precoBolo);
 
                 enqueue(fila, novoBolo);

@@ -73,7 +73,7 @@ int main(){
                 limparBuffer();
                 printf("Digite o nome do bolo: ");
                 scanf("%49[^\n]s", nomeBolo);
-                printf("Digite o tamanho do bolo: ");
+                printf("Digite o tamanho do bolo (P/M/G): ");
                 limparBuffer();
                 scanf("%c", &tamanhoBolo);
                 printf("Digite a data de vencimento do bolo (dd/mm/yyyy): ");
