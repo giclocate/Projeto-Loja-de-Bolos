@@ -1,3 +1,9 @@
+/*LISTA ENCADEADA LOJA BOLOS
+ALUNAS: GIOVANNA CLÓCATE E KÁTIA ROCHA
+PROFESSOR: MAYRTON DIAS DE QUEIROZ
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
