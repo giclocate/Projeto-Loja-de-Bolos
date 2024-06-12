@@ -24,7 +24,7 @@ struct listaNo {
 };
 
 /* Funções relacionadas ao Bolo */
-Bolo* criarBolo();
+Bolo* criarFilaBolo();
 void mostrarBolo(Bolo *bolo);
 void destruirBolo(Bolo *bolo);
 void limparBuffer();
@@ -92,7 +92,7 @@ void limparBuffer () {
     } while (c != '\n');
 }
 
-Bolo* criarBolo() {
+Bolo* criarFilaBolo() {
     Bolo *novoBolo = (Bolo*)malloc(sizeof(Bolo));
     if (novoBolo == NULL) {
         printf("Erro ao alocar memoria para o bolo.\n");
@@ -179,7 +179,7 @@ ListaNo* buscarElemento(Lista *lista, int valor) {
 
 /* Função para inserir um bolo na lista */
 int inserirElemento(Lista *lista, int valor) {
-    Bolo *novoBolo = criarBolo();
+    Bolo *novoBolo = criarFilaBolo();
     inserirBolo(lista, novoBolo);
     printf("Bolo inserido com sucesso.\n");
     return 1;
