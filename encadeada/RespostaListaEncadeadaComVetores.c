@@ -9,7 +9,7 @@
  *            mostrar elementos,                                  *
  *            atualizar elementos,                                *
  *            excluir lista.                                      *
- * Autor: Giovanna Clócate                                        *
+ * Autor: Giovanna Clócate e Kátia Rocha                                      *
  * Ultima alteracao: 11/05/2024                                   *
  ******************************************************************/
 
@@ -42,6 +42,7 @@ int atualizarBolo(Lista*, int, char[], char[], char[], float);
 int buscarBolo(Lista*, int);
 void excluirListaBolo(Lista*);
 int inserirBolo(Lista*, int, char[], char[], char[], float);
+void limparBuffer();
 void imprimirBolo(Lista*);
 int removerBolo(Lista*, int);
 
@@ -69,14 +70,19 @@ int main(){
             case 1:
                 printf("Digite o codigo do bolo: ");
                 scanf("%d", &codigo);
+                limparBuffer();
                 printf("Digite o nome do bolo: ");
-                scanf("%s", nomeBolo);
+                fgets(nomeBolo, sizeof(nomeBolo), stdin);
+                nomeBolo[strcspn(nomeBolo, "\n")] = '\0';  // Remove the trailing newline character
                 printf("Digite o tamanho do bolo: ");
-                scanf("%s", tamanhoBolo);
+                fgets(tamanhoBolo, sizeof(tamanhoBolo), stdin);
+                tamanhoBolo[strcspn(tamanhoBolo, "\n")] = '\0';
                 printf("Digite a data de vencimento do bolo (dd/mm/yyyy): ");
-                scanf("%s", dataVencimento);
+                fgets(dataVencimento, sizeof(dataVencimento), stdin);
+                dataVencimento[strcspn(dataVencimento, "\n")] = '\0';
                 printf("Digite o preco do bolo: ");
                 scanf("%f", &preco);
+                limparBuffer();
                 inserirBolo(lista, codigo, nomeBolo, tamanhoBolo, dataVencimento, preco);
 
                 printf("\nBolo inserido com sucesso!\n");
@@ -118,8 +124,7 @@ int main(){
     return 0;
 }
 
-void limparBuffer () {
-    
+void limparBuffer() {
     char c;
     do {
         c = getchar();
