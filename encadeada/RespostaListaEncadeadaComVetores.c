@@ -9,20 +9,19 @@
  *            mostrar elementos,                                  *
  *            atualizar elementos,                                *
  *            excluir lista.                                      *
- * Autor: Giovanna Clócate e Kátia Rocha                                      *
+ * Autor: Giovanna Clócate e Kátia Rocha                          *
  * Ultima alteracao: 11/05/2024                                   *
  ******************************************************************/
 
-/*Include das bibliotecas*/ 
+/* Include das bibliotecas */ 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #define TAM 4
 
-/*criando a struct Bolo*/
-typedef struct
-{
+/* Criando a struct Bolo */
+typedef struct {
     int codigo;
     char nomeBolo[50];
     char tamanhoBolo;
@@ -30,7 +29,7 @@ typedef struct
     float precoBolo;
 } Bolo;
 
-// segunda struct
+// Segunda struct
 typedef struct {
     int id;
     Bolo *bolos;
@@ -45,12 +44,14 @@ int inserirBolo(Lista*, int, char[], char, char[], float);
 void limparBuffer();
 void imprimirBolo(Lista*);
 int removerBolo(Lista*, int);
+int inserirElementoID(Lista*, int, int, char[], char, char[], float);
+int inserirElementoInicio(Lista*, int, char[], char, char[], float);
+void listarElementos(Lista*);
+int tamanho(Lista*);
 
-int main(){
-
-   Lista *lista = criarBolo();
-   // elementos do menu
-    int opcao, codigo;
+int main() {
+    Lista *lista = criarBolo();
+    int opcao, codigo, posicao;
     float preco;
     char nomeBolo[50], tamanhoBolo, dataVencimento[11];
 
@@ -60,9 +61,12 @@ int main(){
         printf("1. Inserir novo bolo\n");
         printf("2. Remover bolo da lista\n");
         printf("3. Buscar bolo por ID\n");
-        printf("4. Mostrar todos os bolos\n");
+        printf("4. Listar todos os bolos\n");
         printf("5. Remover lista\n");
-        printf("6. Sair\n");
+        printf("6. Inserir bolo em uma posição especifica\n");
+        printf("7. Inserir bolo no inicio da lista\n");
+        printf("8. Mostrar quantidade de elementos na lista\n");
+        printf("9. Sair\n");
         printf("Opcao: ");
         scanf("%d", &opcao);
 
@@ -83,9 +87,7 @@ int main(){
                 limparBuffer();
                 scanf("%f", &preco);
                 inserirBolo(lista, codigo, nomeBolo, tamanhoBolo, dataVencimento, preco);
-
                 printf("\nBolo inserido com sucesso!\n");
-
                 break;
             case 2:
                 printf("Digite o ID do bolo a ser removido: ");
@@ -112,12 +114,53 @@ int main(){
                 printf("Lista de bolos removida.\n");
                 break;
             case 6:
+                printf("Digite a posição para inserir o bolo: ");
+                scanf("%d", &posicao);
+                printf("Digite o ID do bolo: ");
+                scanf("%d", &codigo);
+                limparBuffer();
+                printf("Digite o nome do bolo: ");
+                scanf("%49[^\n]s", nomeBolo);
+                printf("Digite o tamanho do bolo (P/M/G): ");
+                limparBuffer();
+                scanf("%c", &tamanhoBolo);
+                printf("Digite a data de vencimento do bolo (dd/mm/yyyy): ");
+                limparBuffer();
+                scanf("%10[^\n]s", dataVencimento);
+                printf("Digite o preco do bolo: ");
+                limparBuffer();
+                scanf("%f", &preco);
+                inserirElementoID(lista, posicao, codigo, nomeBolo, tamanhoBolo, dataVencimento, preco);
+                printf("\nBolo inserido na posicao %d com sucesso!\n", posicao);
+                break;
+            case 7:
+                printf("Digite o ID do bolo: ");
+                scanf("%d", &codigo);
+                limparBuffer();
+                printf("Digite o nome do bolo: ");
+                scanf("%49[^\n]s", nomeBolo);
+                printf("Digite o tamanho do bolo (P/M/G): ");
+                limparBuffer();
+                scanf("%c", &tamanhoBolo);
+                printf("Digite a data de vencimento do bolo (dd/mm/yyyy): ");
+                limparBuffer();
+                scanf("%10[^\n]s", dataVencimento);
+                printf("Digite o preco do bolo: ");
+                limparBuffer();
+                scanf("%f", &preco);
+                inserirElementoInicio(lista, codigo, nomeBolo, tamanhoBolo, dataVencimento, preco);
+                printf("\nBolo inserido no inicio da lista com sucesso!\n");
+                break;
+            case 8:
+                printf("Quantidade de elementos na lista: %d\n", tamanho(lista));
+                break;
+            case 9:
                 printf("Programa encerrado.\n");
                 break;
             default:
                 printf("Opcao invalida.\n");
         }
-    } while (opcao != 6);
+    } while (opcao != 10);
 
     return 0;
 }
@@ -251,6 +294,94 @@ int inserirBolo(Lista *lista, int codigo, char nomeBolo[], char tamanhoBolo, cha
     return 1;
 }
 
+/* Nome: inserirElementoID
+ * Parametros: lista - ponteiro que possui o endereco lista
+ *             posicao - posição na lista onde o bolo será inserido
+ *             codigo - código do bolo que será adicionado na lista
+ *             nomeBolo - nome do bolo
+ *             tamanhoBolo - tamanho do bolo
+ *             dataVencimento - data de vencimento do bolo
+ *             preco - preco do bolo
+ * Retorno: 1 se o elemento foi adicionado, 0 - caso contrário
+ * Descricao: Funcao criada para inserir um elemento em uma posição específica da lista
+ */
+int inserirElementoID(Lista *lista, int posicao, int codigo, char nomeBolo[], char tamanhoBolo, char dataVencimento[], float preco) {
+    if (lista == NULL) {
+        printf("A lista nao foi criada\n");
+        return 0;
+    }
+    if (posicao < 0 || posicao > lista->id || lista->id >= TAM) {
+        printf("Posição inválida ou lista cheia\n");
+        return 0;
+    }
+
+    for (int i = lista->id; i > posicao; i--) {
+        lista->bolos[i] = lista->bolos[i - 1];
+    }
+    lista->bolos[posicao].codigo = codigo;
+    strcpy(lista->bolos[posicao].nomeBolo, nomeBolo);
+    lista->bolos[posicao].tamanhoBolo = tamanhoBolo;
+    strcpy(lista->bolos[posicao].dataVencimento, dataVencimento);
+    lista->bolos[posicao].precoBolo = preco;
+    lista->id++;
+    return 1;
+}
+
+/* Nome: inserirElementoInicio
+ * Parametros: lista - ponteiro que possui o endereco lista
+ *             codigo - código do bolo que será adicionado na lista
+ *             nomeBolo - nome do bolo
+ *             tamanhoBolo - tamanho do bolo
+ *             dataVencimento - data de vencimento do bolo
+ *             preco - preco do bolo
+ * Retorno: 1 se o elemento foi adicionado, 0 - caso contrário
+ * Descricao: Funcao criada para inserir um elemento no início da lista
+ */
+int inserirElementoInicio(Lista *lista, int codigo, char nomeBolo[], char tamanhoBolo, char dataVencimento[], float preco) {
+    if (lista == NULL) {
+        printf("A lista nao foi criada\n");
+        return 0;
+    }
+    if (lista->id >= TAM) {
+        printf("Lista cheia\n");
+        return 0;
+    }
+
+    for (int i = lista->id; i > 0; i--) {
+        lista->bolos[i] = lista->bolos[i - 1];
+    }
+    
+    lista->bolos[0].codigo = codigo;
+    strcpy(lista->bolos[0].nomeBolo, nomeBolo);
+    lista->bolos[0].tamanhoBolo = tamanhoBolo;
+    strcpy(lista->bolos[0].dataVencimento, dataVencimento);
+    lista->bolos[0].precoBolo = preco;
+    
+    lista->id++;
+    return 1;
+}
+
+/* Nome: listarElementos
+ * Parametro: lista - ponteiro que possui o endereco lista
+ * Retorno: void
+ * Descricao: Funcao criada para apresentar todos os elementos da lista
+ */
+void listarElementos(Lista *lista) {
+    imprimirBolo(lista);
+}
+
+/* Nome: tamanho
+ * Parametro: lista - ponteiro que possui o endereco lista
+ * Retorno: quantidade de elementos na lista
+ * Descricao: Funcao criada para retornar a quantidade de elementos na lista
+ */
+int tamanho(Lista *lista) {
+    if (lista == NULL) {
+        return 0;
+    }
+    return lista->id;
+}
+
 /* Nome: imprimirElementos
  * Parametro: lista - ponteiro que possui o endereco lista
  * Retorno: void
@@ -280,6 +411,7 @@ void imprimirBolo(Lista *lista) {
         printf("\n");
     }
 }
+
 /* Nome: removerElemento
  * Parametro: lista - ponteiro que possui o endereco lista
  *            codigo - código do bolo que será removido da lista
