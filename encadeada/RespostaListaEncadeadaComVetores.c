@@ -25,7 +25,7 @@ typedef struct
 {
     int codigo;
     char nomeBolo[50];
-    char tamanhoBolo[10];
+    char tamanhoBolo;
     char dataVencimento[11];
     float precoBolo;
 } Bolo;
@@ -38,10 +38,10 @@ typedef struct {
 
 // Funções declaradas para a criação do menu
 Lista* criarBolo();
-int atualizarBolo(Lista*, int, char[], char[], char[], float);
+int atualizarBolo(Lista*, int, char[], char, char[], float);
 int buscarBolo(Lista*, int);
 void excluirListaBolo(Lista*);
-int inserirBolo(Lista*, int, char[], char[], char[], float);
+int inserirBolo(Lista*, int, char[], char, char[], float);
 void limparBuffer();
 void imprimirBolo(Lista*);
 int removerBolo(Lista*, int);
@@ -52,7 +52,7 @@ int main(){
    // elementos do menu
     int opcao, codigo;
     float preco;
-    char nomeBolo[50], tamanhoBolo[10], dataVencimento[11];
+    char nomeBolo[50], tamanhoBolo, dataVencimento[11];
 
     do {
         printf("\n############ BEM VINDOS A NOSSA LOJA DE BOLOS! ############\n");
@@ -70,13 +70,17 @@ int main(){
             case 1:
                 printf("Digite o ID do bolo: ");
                 scanf("%d", &codigo);
+                limparBuffer();
                 printf("Digite o nome do bolo: ");
-                scanf("%s", nomeBolo);
+                scanf("%49[^\n]s", nomeBolo);
                 printf("Digite o tamanho do bolo: ");
-                scanf("%s", tamanhoBolo);
+                limparBuffer();
+                scanf("%c", &tamanhoBolo);
                 printf("Digite a data de vencimento do bolo (dd/mm/yyyy): ");
-                scanf("%s", dataVencimento);
+                limparBuffer();
+                scanf("%10[^\n]s", dataVencimento);
                 printf("Digite o preco do bolo: ");
+                limparBuffer();
                 scanf("%f", &preco);
                 inserirBolo(lista, codigo, nomeBolo, tamanhoBolo, dataVencimento, preco);
 
@@ -136,7 +140,7 @@ void limparBuffer() {
  * Descricao: Funcao responsavel por atualizar um elemento
  *            da lista, caso o mesmo esteja na lista indicada
  */
-int atualizarBolo(Lista *lista, int codigo, char nomeBolo[], char tamanhoBolo[], char dataVencimento[], float preco) {
+int atualizarBolo(Lista *lista, int codigo, char nomeBolo[], char tamanhoBolo, char dataVencimento[], float preco) {
     int i;
     if (lista == NULL) {
         printf("A lista nao foi criada\n");
@@ -146,7 +150,7 @@ int atualizarBolo(Lista *lista, int codigo, char nomeBolo[], char tamanhoBolo[],
     for (i = 0; i < lista->id; ++i) {
         if (lista->bolos[i].codigo == codigo) {
             strcpy(lista->bolos[i].nomeBolo, nomeBolo);
-            strcpy(lista->bolos[i].tamanhoBolo, tamanhoBolo);
+            lista->bolos[i].tamanhoBolo = tamanhoBolo;
             strcpy(lista->bolos[i].dataVencimento, dataVencimento);
             lista->bolos[i].precoBolo = preco;
             printf("Bolo atualizado!\n");
@@ -228,7 +232,7 @@ void excluirListaBolo(Lista *lista) {
  * Retorno: 1 se o elemento foi adicionado, 0 - caso contrário
  * Descricao: Funcao criada para inserir um elemento no final da lista
  */
-int inserirBolo(Lista *lista, int codigo, char nomeBolo[], char tamanhoBolo[], char dataVencimento[], float preco) {
+int inserirBolo(Lista *lista, int codigo, char nomeBolo[], char tamanhoBolo, char dataVencimento[], float preco) {
     if (lista == NULL) {
         printf("A lista nao foi criada\n");
         return 0;
@@ -236,7 +240,7 @@ int inserirBolo(Lista *lista, int codigo, char nomeBolo[], char tamanhoBolo[], c
     if (lista->id < TAM) {
         lista->bolos[lista->id].codigo = codigo;
         strcpy(lista->bolos[lista->id].nomeBolo, nomeBolo);
-        strcpy(lista->bolos[lista->id].tamanhoBolo, tamanhoBolo);
+        lista->bolos[lista->id].tamanhoBolo = tamanhoBolo;
         strcpy(lista->bolos[lista->id].dataVencimento, dataVencimento);
         lista->bolos[lista->id].precoBolo = preco;
         ++(lista->id);
@@ -270,13 +274,12 @@ void imprimirBolo(Lista *lista) {
         printf("Bolo %d:\n", i + 1);
         printf("ID do Bolo: %d\n", lista->bolos[i].codigo);
         printf("Nome do Bolo: %s\n", lista->bolos[i].nomeBolo);
-        printf("Tamanho do bolo: %s\n", lista->bolos[i].tamanhoBolo);
+        printf("Tamanho do bolo: %c\n", lista->bolos[i].tamanhoBolo);
         printf("Data de Vencimento: %s\n", lista->bolos[i].dataVencimento);
         printf("Preco: R$%.2f\n", lista->bolos[i].precoBolo);
         printf("\n");
     }
 }
-
 /* Nome: removerElemento
  * Parametro: lista - ponteiro que possui o endereco lista
  *            codigo - código do bolo que será removido da lista
