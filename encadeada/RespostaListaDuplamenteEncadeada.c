@@ -155,17 +155,17 @@ int main() {
             case 1: {
                 Bolo *novoBolo = (Bolo*)malloc(sizeof(Bolo));
                 printf("\nInforme os dados do bolo:\n");
-                printf("ID: ");
+                printf("Digite o ID: ");
                 scanf("%d", &novoBolo->id);
                 limparBuffer();
-                printf("Nome: ");
+                printf("Digite o nome do bolo: ");
                 fgets(novoBolo->nome, sizeof(novoBolo->nome), stdin);
                 novoBolo->nome[strcspn(novoBolo->nome, "\n")] = '\0';  // Remove o caractere de nova linha do fgets
-                printf("Tamanho: ");
+                printf("Digite o tamanho do bolo (P, M ou G): ");
                 scanf(" %c", &novoBolo->tamanho);  // Espaço antes de %c para consumir a quebra de linha pendente
                 fgets(novoBolo->dataVencimento, sizeof(novoBolo->dataVencimento), stdin);
                 novoBolo->dataVencimento[strcspn(novoBolo->dataVencimento, "\n")] = '\0';
-                printf("Preco: ");
+                printf("Digite o preco do bolo: ");
                 scanf("%f", &novoBolo->preco);
                 limparBuffer();
                 novoBolo->prox = NULL;
