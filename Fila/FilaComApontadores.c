@@ -138,11 +138,11 @@ int main() {
                  printf("Digite o ID do bolo: ");
                 scanf("%d", &novoBolo->id);
                 printf("Digite o nome do bolo: ");
-                scanf(" %[^\n]", novoBolo->nomeBolo);
+                scanf("%49[^\n]", novoBolo->nomeBolo);
                 printf("Digite o tamanho do bolo (P/M/G): ");
                 scanf(" %c", &novoBolo->tamanhoBolo);
                 printf("Digite a data de vencimento (dd/mm/yyyy): ");
-                scanf("%s", novoBolo->dataVencimento);
+                scanf("%10[^\n]", novoBolo->dataVencimento);
                 printf("Digite o preco do bolo: ");
                 scanf("%f", &novoBolo->precoBolo);
 
