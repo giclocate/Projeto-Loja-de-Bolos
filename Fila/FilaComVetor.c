@@ -123,13 +123,13 @@ int main() {
                 scanf("%d", &novoBolo->id);
                 limparBuffer();
                 printf("Digite o nome do bolo: ");
-                scanf("%49[^\n]s", &novoBolo->nomeBolo);
+                scanf("%49[^\n]", novoBolo->nomeBolo);
                 printf("Digite o tamanho do bolo (P/M/G): ");
                 limparBuffer();
                 scanf("%c", &novoBolo->tamanhoBolo);
                 printf("Digite a data de vencimento do bolo (dd/mm/yyyy): ");
                 limparBuffer();
-                scanf("%10[^\n]s", &novoBolo->dataVencimento);
+                scanf("%10[^\n]", novoBolo->dataVencimento);
                 printf("Digite o preco do bolo: ");
                 limparBuffer();
                 scanf("%f", &novoBolo->precoBolo);
