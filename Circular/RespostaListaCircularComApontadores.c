@@ -46,10 +46,10 @@ void excluirLista(Lista *lista);
 /* Função principal */
 int main() {
     Lista *lista = criarLista();
-    int opcao, id;
+    int opcao, id, pos;
     char nome[50];
     char tamanhoBolo;
-    char dataVencimento[11];
+    char dataVencimento[20];
     float preco;
 
     do {
@@ -78,7 +78,6 @@ int main() {
                 break;
             case 3:
                 printf("Digite a posicao para inserir o bolo: ");
-                int pos;
                 scanf("%d", &pos);
                 inserirElementoID(lista, criarFilaBolo(), pos);
                 printf("\nBolo inserido na posicao %d com sucesso.\n", pos);
@@ -110,19 +109,19 @@ int main() {
                 nome[strcspn(nome, "\n")] = '\0';
 
                 printf("Digite o novo tamanho do bolo: ");
-                scanf("%c", &tamanho);
+                scanf("%c", &tamanhoBolo);
                 limparBuffer();
 
                 printf("Digite a nova data de vencimento do bolo (DD/MM/AAAA): ");
                 fgets(dataVencimento, sizeof(dataVencimento), stdin);
                 dataVencimento[strcspn(dataVencimento, "\n")] = '\0';
 
-                printf("Digite o novo preço do bolo: ");
+                printf("Digite o novo preco do bolo: ");
                 scanf("%f", &preco);
                 limparBuffer();
 
-        atualizar(lista, id, nome, tamanho, dataVencimento, preco);
-        break;
+                atualizar(lista, id, nome, tamanhoBolo, dataVencimento, preco);
+                break;
             case 8:
                 mostrarElementos(lista);
                 break;
@@ -132,12 +131,11 @@ int main() {
             case 10:
                 excluirLista(lista);
                 printf("\nLista excluida.\n");
-                lista = criarLista();  
+                lista = criarLista();
                 break;
             case 11:
                 excluirLista(lista);
                 printf("\nPrograma encerrado. Volte sempre!\n");
-                printf("--------------\n");
                 break;
             default:
                 printf("Opcao invalida. Tente novamente!\n");
@@ -150,9 +148,7 @@ int main() {
 /* Função para limpar o buffer de entrada */
 void limparBuffer() {
     char c;
-    do {
-        c = getchar();
-    } while (c != '\n');
+    while ((c = getchar()) != '\n' && c != EOF);
 }
 
 /* Função para criar um novo bolo */
@@ -167,16 +163,17 @@ Bolo* criarFilaBolo() {
     scanf("%d", &novoBolo->id);
     limparBuffer();
     printf("\nDigite o nome do bolo:\n");
-    scanf("%49[^\n]s", novoBolo->nomeBolo);
-    limparBuffer();
+    fgets(novoBolo->nomeBolo, sizeof(novoBolo->nomeBolo), stdin);
+    novoBolo->nomeBolo[strcspn(novoBolo->nomeBolo, "\n")] = '\0';
     printf("\nDigite o tamanho do bolo (P, M ou G):\n");
-    scanf(" %c", &novoBolo->tamanhoBolo);
+    scanf("%c", &novoBolo->tamanhoBolo);
     limparBuffer();
-    printf("\nDigite a data de vencimento do bolo:\n");
-    scanf("%10[^\n]s", novoBolo->dataVencimento);
+    printf("\nDigite a data de vencimento do bolo (DD/MM/AAAA):\n");
+    fgets(novoBolo->dataVencimento, sizeof(novoBolo->dataVencimento), stdin);
+    novoBolo->dataVencimento[strcspn(novoBolo->dataVencimento, "\n")] = '\0';
     printf("\nDigite o preco do bolo:\n");
-    limparBuffer();
     scanf("%f", &novoBolo->precoBolo);
+    limparBuffer();
 
     return novoBolo;
 }
@@ -358,7 +355,7 @@ int removerElementoNome(Lista *lista, char *nome) {
     ListaNo *p, *ant = NULL;
 
     if (lista == NULL || lista->prim == NULL) {
-        printf("A lista esta vazia.\n");
+        printf("\nA lista esta vazia.\n");
         return 0;
     }
 
@@ -376,12 +373,12 @@ int removerElementoNome(Lista *lista, char *nome) {
 
             destruirBolo(p->bolo);
             free(p);
-            printf("Bolo removido com sucesso.\n");
+            printf("\nBolo removido com sucesso.\n");
             return 1;
         }
     }
 
-    printf("Bolo nao encontrado.\n");
+    printf("\nBolo nao encontrado.\n");
     return 0;
 }
 
@@ -390,7 +387,7 @@ void atualizar(Lista *lista, int id, char *novoNome, char novoTamanho, char *nov
     ListaNo *p;
 
     if (lista == NULL || lista->prim == NULL) {
-        printf("A lista está vazia.\n");
+        printf("\nA lista esta vazia.\n");
         return;
     }
 
@@ -408,12 +405,12 @@ void atualizar(Lista *lista, int id, char *novoNome, char novoTamanho, char *nov
             printf("Nome: %s\n", p->bolo->nomeBolo);
             printf("Tamanho: %c\n", p->bolo->tamanhoBolo);
             printf("Data de Vencimento: %s\n", p->bolo->dataVencimento);
-            printf("Preço: %.2f\n", p->bolo->precoBolo);
+            printf("Preco: %.2f\n", p->bolo->precoBolo);
             return;
         }
     }
 
-    printf("Bolo não encontrado.\n");
+    printf("\nBolo nao encontrado.\n");
 }
 
 /* Função para obter o tamanho da lista */
