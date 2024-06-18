@@ -114,6 +114,12 @@ void excluirFila(Fila* fila) {
     free(fila);
 }
 
+/* Função para limpar o buffer de entrada */
+void limparBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
 /* Função principal */
 int main() {
     Fila* fila = criarFilaBolo();
@@ -137,12 +143,16 @@ int main() {
                 }
                  printf("Digite o ID do bolo: ");
                 scanf("%d", &novoBolo->id);
+                limparBuffer();
                 printf("Digite o nome do bolo: ");
                 scanf("%49[^\n]", novoBolo->nomeBolo);
+                limparBuffer();
                 printf("Digite o tamanho do bolo (P/M/G): ");
                 scanf(" %c", &novoBolo->tamanhoBolo);
+                limparBuffer();
                 printf("Digite a data de vencimento (dd/mm/yyyy): ");
                 scanf("%10[^\n]", novoBolo->dataVencimento);
+                limparBuffer();
                 printf("Digite o preco do bolo: ");
                 scanf("%f", &novoBolo->precoBolo);
 
