@@ -1,5 +1,5 @@
 /****************************************************************** 
- * Nome: Lista encadeada                                          *
+ * Nome: Lista encadeada com vetores                              *
  * Descricao: Implementacao de lista encadeada. Esse codigo possui*
  *            as principais operacoes da lista, como:             *
  *            criar lista,                                        *
@@ -59,12 +59,12 @@ int main() {
         printf("\n############ BEM VINDOS A NOSSA LOJA DE BOLOS! ############\n");
         printf("\nEscolha uma das opcoes abaixo:\n");
         printf("1. Inserir novo bolo\n");
-        printf("2. Remover bolo da lista\n");
-        printf("3. Buscar bolo por ID\n");
-        printf("4. Listar todos os bolos\n");
-        printf("5. Remover lista\n");
-        printf("6. Inserir bolo em uma posição especifica\n");
-        printf("7. Inserir bolo no inicio da lista\n");
+        printf("2. Inserir bolo no inicio da lista\n");
+        printf("3. Inserir bolo em uma posição especifica\n");
+        printf("4. Buscar bolo por ID\n");
+        printf("5. Remover bolo da lista\n");
+        printf("6. Listar todos os bolos\n");
+        printf("7. Remover lista\n");
         printf("8. Mostrar quantidade de elementos na lista\n");
         printf("9. Sair\n");
         printf("Opcao: ");
@@ -90,30 +90,24 @@ int main() {
                 printf("\nBolo inserido com sucesso!\n");
                 break;
             case 2:
-                printf("Digite o ID do bolo a ser removido: ");
+                printf("Digite o ID do bolo: ");
                 scanf("%d", &codigo);
-                removerBolo(lista, codigo);
-                printf("\nBolo removido com sucesso!\n");
+                limparBuffer();
+                printf("Digite o nome do bolo: ");
+                scanf("%49[^\n]s", nomeBolo);
+                printf("Digite o tamanho do bolo (P/M/G): ");
+                limparBuffer();
+                scanf("%c", &tamanhoBolo);
+                printf("Digite a data de vencimento do bolo (dd/mm/yyyy): ");
+                limparBuffer();
+                scanf("%10[^\n]s", dataVencimento);
+                printf("Digite o preco do bolo: ");
+                limparBuffer();
+                scanf("%f", &preco);
+                inserirElementoInicio(lista, codigo, nomeBolo, tamanhoBolo, dataVencimento, preco);
+                printf("\nBolo inserido no inicio da lista com sucesso!\n");
                 break;
             case 3:
-                printf("Digite o ID do bolo para buscar: ");
-                scanf("%d", &codigo);
-                int busca = buscarBolo(lista, codigo);
-                if (busca != -1) {
-                    printf("Bolo encontrado na posicao %d\n", busca);
-                } else {
-                    printf("Bolo nao encontrado\n");
-                }
-                break;
-            case 4:
-                imprimirBolo(lista);
-                break;
-            case 5:
-                excluirListaBolo(lista);
-                lista = criarBolo();
-                printf("Lista de bolos removida.\n");
-                break;
-            case 6:
                 printf("Digite a posição para inserir o bolo: ");
                 scanf("%d", &posicao);
                 printf("Digite o ID do bolo: ");
@@ -133,23 +127,35 @@ int main() {
                 inserirElementoID(lista, posicao, codigo, nomeBolo, tamanhoBolo, dataVencimento, preco);
                 printf("\nBolo inserido na posicao %d com sucesso!\n", posicao);
                 break;
-            case 7:
-                printf("Digite o ID do bolo: ");
+            case 4:
+                printf("Digite o ID do bolo para buscar: ");
                 scanf("%d", &codigo);
                 limparBuffer();
-                printf("Digite o nome do bolo: ");
-                scanf("%49[^\n]s", nomeBolo);
-                printf("Digite o tamanho do bolo (P/M/G): ");
-                limparBuffer();
-                scanf("%c", &tamanhoBolo);
-                printf("Digite a data de vencimento do bolo (dd/mm/yyyy): ");
-                limparBuffer();
-                scanf("%10[^\n]s", dataVencimento);
-                printf("Digite o preco do bolo: ");
-                limparBuffer();
-                scanf("%f", &preco);
-                inserirElementoInicio(lista, codigo, nomeBolo, tamanhoBolo, dataVencimento, preco);
-                printf("\nBolo inserido no inicio da lista com sucesso!\n");
+                int busca = buscarBolo(lista, codigo);
+                if (busca != -1) {
+                    printf("Bolo encontrado na posicao %d\n", busca);
+                    printf("Codigo do Bolo: %d\n", lista->bolos[busca].codigo);
+                    printf("Nome do Bolo: %s\n", lista->bolos[busca].nomeBolo);
+                    printf("Tamanho do Bolo: %c\n", lista->bolos[busca].tamanhoBolo);
+                    printf("Data de Vencimento: %s\n", lista->bolos[busca].dataVencimento);
+                    printf("Preco: R$%.2f\n", lista->bolos[busca].precoBolo);
+                } else {
+                    printf("Bolo nao encontrado\n");
+                }
+                break;
+            case 5:
+                printf("Digite o ID do bolo a ser removido: ");
+                scanf("%d", &codigo);
+                removerBolo(lista, codigo);
+                printf("\nBolo removido com sucesso!\n");
+                break;
+            case 6:
+                imprimirBolo(lista);
+                break;
+            case 7:
+                excluirListaBolo(lista);
+                lista = criarBolo();
+                printf("Lista de bolos removida.\n");
                 break;
             case 8:
                 printf("Quantidade de elementos na lista: %d\n", tamanho(lista));
