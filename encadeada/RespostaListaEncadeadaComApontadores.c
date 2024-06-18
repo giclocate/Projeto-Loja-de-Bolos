@@ -1,5 +1,5 @@
 /****************************************************************** 
- * Nome: Lista encadeada com vetores                              *
+ * Nome: Lista encadeada com apontadores                          *
  * Descricao: Implementacao de lista encadeada com vetores. Esse  * 
  *            codigo possui as principais operacoes da lista,     * 
  *            como:                                               *
@@ -65,13 +65,14 @@ int main() {
     do {
         printf("\nMenu de Operacoes:\n");
         printf("1. Inserir novo bolo\n");
-        printf("2. Inserir bolo no início\n");
-        printf("3. Inserir bolo na posição\n");
+        printf("2. Inserir bolo no inicio\n");
+        printf("3. Inserir bolo na posicao\n");
         printf("4. Remover bolo\n");
         printf("5. Buscar bolo por ID\n");
         printf("6. Mostrar todos os bolos\n");
         printf("7. Mostrar quantidade de bolos\n");
-        printf("8. Sair\n");
+        printf("8. Excluir lista\n");
+        printf("9. Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
 
@@ -83,7 +84,7 @@ int main() {
                 inserirElementoInicio(lista, lista->ult != NULL ? lista->ult->bolo->id + 1 : 1);
                 break;
             case 3:
-                printf("Digite a posição onde o bolo será inserido: ");
+                printf("Digite a posicao onde o bolo sera inserido: ");
                 scanf("%d", &posicao);
                 inserirElementoID(lista, posicao);
                 break;
@@ -105,12 +106,18 @@ int main() {
                 break;
             case 8:
                 excluirLista(lista);
+                lista = criarLista();
+                printf("Lista de bolos excluida.\n");
+                break;
+            case 9:
                 printf("Programa encerrado.\n");
+                printf("Obrigado por usar o programa.\n");
+                printf("--------------------------------\n");
                 break;
             default:
                 printf("Opcao invalida.\n");
         }
-    } while (opcao != 8);
+    } while (opcao != 9);
 
     return 0;
 }
@@ -151,7 +158,7 @@ Bolo* criarFilaBolo() {
 
 /* Função para mostrar os detalhes de um bolo */
 void mostrarBolo(Bolo *bolo) {
-    printf("ID: %d\n", bolo->id);
+    printf("\nID: %d\n", bolo->id);
     printf("Nome: %s\n", bolo->nomeBolo);
     printf("Tamanho: %c\n", bolo->tamanhoBolo);
     printf("Data de Vencimento: %s\n", bolo->dataVencimento);
@@ -204,7 +211,7 @@ ListaNo* buscarElemento(Lista *lista, int valor) {
 
     for (p = lista->prim; p != NULL; p = p->prox) {
         if (p->bolo->id == valor) {
-            printf("Bolo encontrado:\n");
+            printf("\nBolo encontrado:\n");
             mostrarBolo(p->bolo);
             return p;
         }
@@ -230,7 +237,8 @@ void mostrarElementos(Lista *lista) {
         return;
     }
 
-    printf("Lista de Bolos:\n");
+    printf("\nLISTA DE BOLOS: \n");
+    printf("----------------\n");
     for (p = lista->prim; p != NULL; p = p->prox) {
         mostrarBolo(p->bolo);
     }
@@ -319,7 +327,7 @@ int inserirElementoID(Lista *lista, int posicao) {
         }
     }
 
-    printf("Bolo inserido na posição %d com sucesso.\n", posicao);
+    printf("Bolo inserido na posicao %d com sucesso.\n", posicao);
     return 1;
 }
 
