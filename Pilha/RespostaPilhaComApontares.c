@@ -1,3 +1,9 @@
+/*
+    PILHA COM APONTADORES
+    ALUNAS: GIOVANNA CLÓCATE E KÁTIA ROCHA
+    PROFESSOR: MAYRTON DIAS DE QUEIROZ    
+*/
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -74,8 +80,8 @@ void mostrarElementos(Pilha *pilha) {
     Bolo *atual = pilha->topo;
     printf("Lista de Bolos:\n");
     while (atual != NULL) {
-        printf("ID: %d, Nome: %s, Tamanho: %c, Preco: %.2f\n",
-            atual->id, atual->nome, atual->tamanho, atual->preco);
+        printf("ID: %d, Nome do bolo: %s, Tamanho(P/M/G): %c, Data de Vencimento(DD/MM/AAAA): %s, Preco: %.2f\n",
+            atual->id, atual->nome, atual->tamanho,atual->dataVencimento, atual->preco);
         atual = atual->prox;
     }
 }
@@ -110,7 +116,8 @@ int main() {
         printf("2. Remover bolo\n");
         printf("3. Mostrar todos os bolos\n");
         printf("4. Ver topo\n");
-        printf("5. Sair\n");
+        printf("5. Excluir pilha\n");
+        printf("6. Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
         limparBuffer();
@@ -126,13 +133,13 @@ int main() {
                 printf("ID: ");
                 scanf("%d", &novoBolo->id);
                 limparBuffer();
-                printf("Nome: ");
+                printf("Nome do bolo: ");
                 fgets(novoBolo->nome, sizeof(novoBolo->nome), stdin);
                 novoBolo->nome[strcspn(novoBolo->nome, "\n")] = '\0';  // Remove o caractere de nova linha do fgets
-                printf("Tamanho: ");
+                printf("Tamanho(P/M/G): ");
                 scanf(" %c", &novoBolo->tamanho);  // Espaço antes de %c para consumir a quebra de linha pendente
                 limparBuffer();
-                printf("Data de Vencimento: ");
+                printf("Data de Vencimento (DD/MM/AAAA): ");
                 fgets(novoBolo->dataVencimento, sizeof(novoBolo->dataVencimento), stdin);
                 novoBolo->dataVencimento[strcspn(novoBolo->dataVencimento, "\n")] = '\0';
                 printf("Preco: ");
@@ -146,8 +153,8 @@ int main() {
                 Bolo *boloRemovido = pop(pilha);
                 if (boloRemovido != NULL) {
                     printf("\nBolo removido:\n");
-                    printf("ID: %d, Nome: %s, Tamanho: %c, Preco: %.2f\n",
-                           boloRemovido->id, boloRemovido->nome, boloRemovido->tamanho, boloRemovido->preco);
+                    printf("ID: %d, Nome: %s, Tamanho(P/M/G): %c, Data de Vencimento(DD/MM/AAAA): %s, Preco: %.2f\n",
+                           boloRemovido->id, boloRemovido->nome, boloRemovido->tamanho, boloRemovido->dataVencimento, boloRemovido->preco);
                     free(boloRemovido);  // Libera a memória do bolo removido
                 }
                 break;
@@ -160,20 +167,25 @@ int main() {
                 Bolo *topo = verTopo(pilha);
                 if (topo != NULL) {
                     printf("\nTopo da pilha:\n");
-                    printf("ID: %d, Nome: %s, Tamanho: %c, Preco: %.2f\n",
-                           topo->id, topo->nome, topo->tamanho, topo->preco);
+                    printf("ID: %d, Nome: %s, Tamanho(P/M/G): %c, Data de Vencimento(DD/MM/AAAA): %s, Preco: %.2f\n",
+                           topo->id, topo->nome, topo->tamanho,topo->dataVencimento, topo->preco);
                 }
                 break;
             }
             case 5: {
-                printf("\nEncerrando o programa.\n");
                 excluirPilha(pilha);
-                exit(0);
+                printf("\n");
+                pilha = criarPilha();
+                break;
             }
+            case 6:
+                printf("\nEncerrando o programa.\n");
+                exit(0);
+                break;
             default:
                 printf("\nOpcao invalida. Tente novamente.\n");
         }
-    } while (opcao != 5);
+    } while (opcao != 6);
 
     return 0;
 }
