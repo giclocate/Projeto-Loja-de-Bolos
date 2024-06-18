@@ -4,7 +4,6 @@
     PROFESSOR: MAYRTON DIAS DE QUEIROZ    
 */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -71,21 +70,6 @@ Bolo* verTopo(Pilha *pilha) {
     return pilha->topo;
 }
 
-/* Função para mostrar todos os bolos da pilha */
-void mostrarElementos(Pilha *pilha) {
-    if (ehVazia(pilha)) {
-        printf("A pilha esta vazia.\n");
-        return;
-    }
-    Bolo *atual = pilha->topo;
-    printf("Lista de Bolos:\n");
-    while (atual != NULL) {
-        printf("ID: %d, Nome do bolo: %s, Tamanho(P/M/G): %c, Data de Vencimento(DD/MM/AAAA): %s, Preco: %.2f\n",
-            atual->id, atual->nome, atual->tamanho,atual->dataVencimento, atual->preco);
-        atual = atual->prox;
-    }
-}
-
 /* Função para excluir a pilha */
 void excluirPilha(Pilha *pilha) {
     Bolo *atual = pilha->topo;
@@ -114,10 +98,9 @@ int main() {
         printf("\nNOSSO MENU:\n");
         printf("1. Inserir bolo\n");
         printf("2. Remover bolo\n");
-        printf("3. Mostrar todos os bolos\n");
-        printf("4. Ver topo\n");
-        printf("5. Excluir pilha\n");
-        printf("6. Sair\n");
+        printf("3. Ver topo\n");
+        printf("4. Excluir pilha\n");
+        printf("5. Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
         limparBuffer();
@@ -160,10 +143,6 @@ int main() {
                 break;
             }
             case 3: {
-                mostrarElementos(pilha);
-                break;
-            }
-            case 4: {
                 Bolo *topo = verTopo(pilha);
                 if (topo != NULL) {
                     printf("\nTopo da pilha:\n");
@@ -172,21 +151,20 @@ int main() {
                 }
                 break;
             }
-            case 5: {
+            case 4: {
                 excluirPilha(pilha);
                 printf("\n");
                 pilha = criarPilha();
                 break;
             }
-            case 6:
+            case 5:
                 printf("\nEncerrando o programa.\n");
-                exit(0);
+                printf("--------------------------------\n");
                 break;
             default:
                 printf("\nOpcao invalida. Tente novamente.\n");
         }
-    } while (opcao != 6);
+    } while (opcao != 5);
 
     return 0;
 }
-
