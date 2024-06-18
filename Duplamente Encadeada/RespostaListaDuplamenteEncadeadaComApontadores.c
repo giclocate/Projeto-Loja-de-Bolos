@@ -1,3 +1,11 @@
+/********************************************************************************
+*               Lista Duplamente Encadeada                                      *
+*                                                                               *                                                     *
+* ALUNAS -> GIOVANNA CLÓCATE E KÁTIA ROCHA                                      *
+* PROFESSOR -> MAYRTON DIAS DE QUEIROZ                                          *   
+********************************************************************************/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -71,7 +79,7 @@ void inserirElementoInicio(Lista *lista, Bolo *novoBolo) {
         lista->inicio->ant = novoBolo;
         lista->inicio = novoBolo;
     }
-    printf("Bolo inserido no início com sucesso.\n");
+    printf("Bolo inserido no inicio com sucesso.\n");
 }
 
 /* Função para inserir um novo bolo na posição indicada */
@@ -270,6 +278,7 @@ void limparBuffer() {
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
+/* Função principal que irá inicializar o menu */
 int main() {
     Lista *lista = criarLista();
     int opcao;
@@ -278,8 +287,8 @@ int main() {
         printf("\nSEJAM BEM-VINDOS(AS) A MELHOR LOJA DE BOLOS!\n");
         printf("\nNOSSO MENU:\n");
         printf("1. Inserir bolo no final\n");
-        printf("2. Inserir bolo no início\n");
-        printf("3. Inserir bolo em posição especifica\n");
+        printf("2. Inserir bolo no inicio\n");
+        printf("3. Inserir bolo em posicao especifica\n");
         printf("4. Inserir bolo em ordem alfabetica\n");
         printf("5. Remover bolo por posicao\n");
         printf("6. Remover bolo por nome\n");
@@ -364,6 +373,10 @@ int main() {
                 char dataVencimento[20];
                 float preco;
 
+                printf("Digite a posicao para inserir o bolo: ");
+                scanf("%d", &pos);
+                limparBuffer();
+
                 printf("Digite o ID: ");
                 scanf("%d", &id);
                 limparBuffer();
@@ -384,10 +397,7 @@ int main() {
                 scanf("%f", &preco);
                 limparBuffer();
 
-                printf("Digite a posicao para inserir o bolo: ");
-                scanf("%d", &pos);
-                limparBuffer();
-
+                
                 Bolo *novoBolo = criarBolo(id, nome, tamanho, dataVencimento, preco);
                 inserirElementoID(lista, novoBolo, pos);
                 break;
