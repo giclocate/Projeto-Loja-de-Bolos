@@ -60,13 +60,14 @@ int main() {
         printf("\nEscolha uma das opcoes abaixo:\n");
         printf("1. Inserir novo bolo\n");
         printf("2. Inserir bolo no inicio da lista\n");
-        printf("3. Inserir bolo em uma posição especifica\n");
+        printf("3. Inserir bolo em uma posicao especifica\n");
         printf("4. Buscar bolo por ID\n");
         printf("5. Remover bolo da lista\n");
         printf("6. Listar todos os bolos\n");
-        printf("7. Remover lista\n");
-        printf("8. Mostrar quantidade de elementos na lista\n");
-        printf("9. Sair\n");
+        printf("7. Atualizar bolo\n"); // Nova opção para atualizar bolo
+        printf("8. Remover lista\n");
+        printf("9. Mostrar quantidade de elementos na lista\n");
+        printf("10. Sair\n");
         printf("Opcao: ");
         scanf("%d", &opcao);
 
@@ -152,15 +153,32 @@ int main() {
             case 6:
                 imprimirBolo(lista);
                 break;
-            case 7:
+            case 7: 
+                printf("Digite o ID do bolo a ser atualizado: ");
+                scanf("%d", &codigo);
+                limparBuffer();
+                printf("Digite o novo nome do bolo: ");
+                scanf("%49[^\n]s", nomeBolo);
+                printf("Digite o novo tamanho do bolo (P/M/G): ");
+                limparBuffer();
+                scanf("%c", &tamanhoBolo);
+                printf("Digite a nova data de vencimento do bolo (dd/mm/yyyy): ");
+                limparBuffer();
+                scanf("%10[^\n]s", dataVencimento);
+                printf("Digite o novo preco do bolo: ");
+                limparBuffer();
+                scanf("%f", &preco);
+                atualizarBolo(lista, codigo, nomeBolo, tamanhoBolo, dataVencimento, preco);
+                break;
+            case 8:
                 excluirListaBolo(lista);
                 lista = criarBolo();
                 printf("Lista de bolos removida.\n");
                 break;
-            case 8:
+            case 9:
                 printf("Quantidade de elementos na lista: %d\n", tamanho(lista));
                 break;
-            case 9:
+            case 10:
                 printf("Programa encerrado.\n");
                 break;
             default:

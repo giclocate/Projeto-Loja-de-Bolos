@@ -49,12 +49,13 @@ void limparBuffer();
 Lista* criarLista();
 void inserirBolo(Lista *lista, Bolo *novoBolo);
 ListaNo* buscarElemento(Lista *lista, int valor);
-int inserirElemento(Lista *lista, int valor);
+int inserirElemento(Lista *lista);
 int removerElemento(Lista *lista, int valor);
+int atualizarElemento(Lista *lista, int id);
 void mostrarElementos(Lista *lista);
 void excluirLista(Lista *lista);
 int inserirElementoID(Lista *lista, int posicao);
-int inserirElementoInicio(Lista *lista, int id);
+int inserirElementoInicio(Lista *lista);
 int tamanho(Lista *lista);
 
 /* Função principal */
@@ -71,17 +72,18 @@ int main() {
         printf("5. Buscar bolo por ID\n");
         printf("6. Mostrar todos os bolos\n");
         printf("7. Mostrar quantidade de bolos\n");
-        printf("8. Excluir lista\n");
-        printf("9. Sair\n");
+        printf("8. Atualizar bolo\n"); 
+        printf("9. Excluir lista\n");
+        printf("10. Sair\n");
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
 
         switch (opcao) {
             case 1:
-                inserirElemento(lista, lista->ult != NULL ? lista->ult->bolo->id + 1 : 1);
+                inserirElemento(lista);
                 break;
             case 2:
-                inserirElementoInicio(lista, lista->ult != NULL ? lista->ult->bolo->id + 1 : 1);
+                inserirElementoInicio(lista);
                 break;
             case 3:
                 printf("Digite a posicao onde o bolo sera inserido: ");
@@ -89,9 +91,14 @@ int main() {
                 inserirElementoID(lista, posicao);
                 break;
             case 4:
-                printf("Digite o ID do bolo a ser removido: ");
-                scanf("%d", &id);
-                removerElemento(lista, id);
+                if (lista == NULL || lista->prim == NULL) {
+                    printf("A lista esta vazia.\n");
+                }
+                else{
+                    printf("Digite o ID do bolo a ser removido: ");
+                    scanf("%d", &id);
+                    removerElemento(lista, id);
+                }
                 break;
             case 5:
                 printf("Digite o ID do bolo a ser buscado: ");
@@ -105,11 +112,16 @@ int main() {
                 printf("Quantidade de bolos na lista: %d\n", tamanho(lista));
                 break;
             case 8:
+                printf("Digite o ID do bolo a ser atualizado: ");
+                scanf("%d", &id);
+                atualizarElemento(lista, id);
+                break;
+            case 9:
                 excluirLista(lista);
                 lista = criarLista();
                 printf("Lista de bolos excluida.\n");
                 break;
-            case 9:
+            case 10:
                 printf("Programa encerrado.\n");
                 printf("Obrigado por usar o programa.\n");
                 printf("--------------------------------\n");
@@ -117,7 +129,7 @@ int main() {
             default:
                 printf("Opcao invalida.\n");
         }
-    } while (opcao != 9);
+    } while (opcao != 10);
 
     return 0;
 }
@@ -221,7 +233,7 @@ ListaNo* buscarElemento(Lista *lista, int valor) {
 }
 
 /* Função para inserir um bolo na lista */
-int inserirElemento(Lista *lista, int valor) {
+int inserirElemento(Lista *lista) {
     Bolo *novoBolo = criarFilaBolo();
     inserirBolo(lista, novoBolo);
     printf("Bolo inserido com sucesso.\n");
@@ -332,7 +344,7 @@ int inserirElementoID(Lista *lista, int posicao) {
 }
 
 /* Função para inserir um bolo no início da lista */
-int inserirElementoInicio(Lista *lista, int id) {
+int inserirElementoInicio(Lista *lista) {
     return inserirElementoID(lista, 1);
 }
 
@@ -345,4 +357,51 @@ int tamanho(Lista *lista) {
         p = p->prox;
     }
     return count;
+}
+
+/* Função para atualizar os dados de um bolo na lista */
+int atualizarElemento(Lista *lista, int id) {
+    ListaNo *no = buscarElemento(lista, id);
+    if (no == NULL) {
+        printf("Bolo nao encontrado.\n");
+        return 0;
+    }
+
+    Bolo *bolo = no->bolo;
+    printf("\nAtualizando o bolo com ID %d:\n", bolo->id);
+
+    printf("\nDigite o novo nome do bolo (deixe em branco para nao alterar):\n");
+    limparBuffer();
+    char nomeBolo[50];
+    fgets(nomeBolo, 50, stdin);
+    if (strcmp(nomeBolo, "\n") != 0) {
+        strtok(nomeBolo, "\n");
+        strcpy(bolo->nomeBolo, nomeBolo);
+    }
+
+    printf("\nDigite o novo tamanho do bolo (P, M ou G) (deixe em branco para nao alterar):\n");
+    char tamanhoBolo;
+    if (scanf(" %c", &tamanhoBolo) == 1) {
+        bolo->tamanhoBolo = tamanhoBolo;
+    }
+    limparBuffer();
+
+    printf("\nDigite a nova data de vencimento do bolo (deixe em branco para nao alterar):\n");
+    char dataVencimento[20];
+    fgets(dataVencimento, 20, stdin);
+    if (strcmp(dataVencimento, "\n") != 0) {
+        strtok(dataVencimento, "\n");
+        strcpy(bolo->dataVencimento, dataVencimento);
+    }
+
+    printf("\nDigite o novo preco do bolo (deixe em branco para nao alterar):\n");
+    char precoBoloStr[20];
+    fgets(precoBoloStr, 20, stdin);
+    if (strcmp(precoBoloStr, "\n") != 0) {
+        float precoBolo = atof(precoBoloStr);
+        bolo->precoBolo = precoBolo;
+    }
+
+    printf("Bolo atualizado com sucesso.\n");
+    return 1;
 }
